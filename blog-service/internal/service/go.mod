@@ -11,6 +11,8 @@ replace (
 	logger => ../../pkg/logger
 	model => ../model
 	setting => ../../pkg/setting
+	upload => ../../pkg/upload
+	util => ../../pkg/util
 )
 
 require (
@@ -18,6 +20,7 @@ require (
 	dao v0.0.0-00010101000000-000000000000
 	global v0.0.0-00010101000000-000000000000
 	model v0.0.0-00010101000000-000000000000
+	upload v0.0.0-00010101000000-000000000000
 )
 
 require (
@@ -60,4 +63,5 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	logger v0.0.0-00010101000000-000000000000 // indirect
 	setting v0.0.0 // indirect
+	util v0.0.0-00010101000000-000000000000 // indirect
 )

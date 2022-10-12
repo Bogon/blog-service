@@ -64,3 +64,7 @@
 2022/10/12 20:50:49 {"callers":["/Users/zhangqi/go/src/senyas.tour.com/blog-service/main.go: 23 main.init.0"],"level":"error","message":"svc.CountTag err: ID为必填字段","time":1665579049350629000}
 2022/10/12 20:55:04 {"callers":["/Users/zhangqi/go/src/senyas.tour.com/blog-service/main.go: 23 main.init.0"],"level":"info","message":"eddycjy: senyas.tour/blog-service","time":1665579304670484000}
 2022/10/12 20:55:04 {"callers":["/Users/zhangqi/go/src/senyas.tour.com/blog-service/main.go: 23 main.init.0"],"level":"info","message":"%s: senyas.tour/%seddycjyblog-service","time":1665579304670704000}
+2022/10/12 21:53:21 {"callers":["/Users/zhangqi/go/src/senyas.tour.com/blog-service/main.go: 23 main.init.0"],"level":"info","message":"eddycjy: senyas.tour/blog-service","time":1665582801133113000}
+2022/10/12 21:53:21 {"callers":["/Users/zhangqi/go/src/senyas.tour.com/blog-service/main.go: 23 main.init.0"],"level":"info","message":"%s: senyas.tour/%seddycjyblog-service","time":1665582801133350000}
+2022/10/12 21:58:37 {"callers":["/Users/zhangqi/go/src/senyas.tour.com/blog-service/main.go: 23 main.init.0"],"level":"info","message":"eddycjy: senyas.tour/blog-service","time":1665583117709292000}
+2022/10/12 21:58:37 {"callers":["/Users/zhangqi/go/src/senyas.tour.com/blog-service/main.go: 23 main.init.0"],"level":"info","message":"%s: senyas.tour/%seddycjyblog-service","time":1665583117709485000}

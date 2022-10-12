@@ -3,6 +3,7 @@ module blog-service
 go 1.18
 
 replace (
+	api => ./internal/routers/api
 	//model => ./internal/model
 	app => ./pkg/app
 	convert => ./pkg/convert
@@ -16,8 +17,9 @@ replace (
 	routers => ./internal/routers
 	service => ./internal/service
 	setting => ./pkg/setting
+	upload => ./pkg/upload
+	util => ./pkg/util
 	v1 => ./internal/routers/api/v1
-
 )
 
 require (
@@ -31,6 +33,7 @@ require (
 )
 
 require (
+	api v0.0.0-00010101000000-000000000000 // indirect
 	app v0.0.0 // indirect
 	convert v0.0.0-00010101000000-000000000000 // indirect
 	dao v0.0.0-00010101000000-000000000000 // indirect
@@ -86,5 +89,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	middleware v0.0.0-00010101000000-000000000000 // indirect
 	service v0.0.0-00010101000000-000000000000 // indirect
+	upload v0.0.0-00010101000000-000000000000 // indirect
+	util v0.0.0-00010101000000-000000000000 // indirect
 	v1 v0.0.0 // indirect
 )

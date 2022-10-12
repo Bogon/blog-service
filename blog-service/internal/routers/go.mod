@@ -3,6 +3,7 @@ module routers
 go 1.18
 
 require (
+	api v0.0.0-00010101000000-000000000000
 	docs v0.0.0-00010101000000-000000000000
 	github.com/gin-gonic/gin v1.8.1
 	github.com/swaggo/files v0.0.0-20220728132757-551d4a08d97a
@@ -66,9 +67,12 @@ require (
 	model v0.0.0-00010101000000-000000000000 // indirect
 	service v0.0.0-00010101000000-000000000000 // indirect
 	setting v0.0.0 // indirect
+	upload v0.0.0-00010101000000-000000000000 // indirect
+	util v0.0.0-00010101000000-000000000000 // indirect
 )
 
 replace (
+	api => ./api
 	app => ../../pkg/app
 	convert => ../../pkg/convert
 	dao => ../../internal/dao
@@ -80,5 +84,7 @@ replace (
 	model => ./../../internal/model
 	service => ./../../internal/service
 	setting => ./../../pkg/setting
+	upload => ../../pkg/upload
+	util => ../../pkg/util
 	v1 => ./api/v1
 )

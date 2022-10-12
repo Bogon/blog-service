@@ -28,3 +28,13 @@ go get -u github.com/go-playground/validator/v10
 |max|	最大值|
 |oneof|	参数集内的其中之一|
 |len|	长度要求与 len 给定的一致|
+
+## 上传图片
+```Go
+UploadSavePath：上传文件的最终保存目录。
+UploadServerUrl：上传文件后的用于展示的文件服务地址。
+UploadImageMaxSize：上传文件所允许的最大空间大小（MB）。
+UploadImageAllowExts：上传文件所允许的文件后缀。
+```
+
+> 在实际项目中，应当将应用服务和文件服务给拆分开来，因为从安全角度来讲，文件资源不应当与应用资源摆放在一起，否则会有风险，又或是直接采用市面上的 OSS 也是可以的。
