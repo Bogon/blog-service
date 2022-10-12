@@ -10,6 +10,12 @@ CREATE TABLE `blog_tag` (
     `name` varchar(100) DEFAULT '' COMMENT '标签名称',
     # 此处请写入公共字段
     `state` tinyint(3) unsigned DEFAULT '1' COMMENT '状态 0 为禁用、1 为启用',
+    `created_on` int(10) unsigned DEFAULT '0' COMMENT '创建时间',
+    `created_by` varchar(100) DEFAULT '' COMMENT '创建人',
+    `modified_on` int(10) unsigned DEFAULT '0' COMMENT '修改时间',
+    `modified_by` varchar(100) DEFAULT '' COMMENT '修改人',
+    `deleted_on` int(10) unsigned DEFAULT '0' COMMENT '删除时间',
+    `is_del` tinyint(3) unsigned DEFAULT '0' COMMENT '是否删除 0 为未删除、1 为已删除',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='标签管理';
 
@@ -22,6 +28,12 @@ CREATE TABLE `blog_article` (
     `content` longtext COMMENT '文章内容',
     # 此处请写入公共字段
     `state` tinyint(3) unsigned DEFAULT '1' COMMENT '状态 0 为禁用、1 为启用',
+    `created_on` int(10) unsigned DEFAULT '0' COMMENT '创建时间',
+    `created_by` varchar(100) DEFAULT '' COMMENT '创建人',
+    `modified_on` int(10) unsigned DEFAULT '0' COMMENT '修改时间',
+    `modified_by` varchar(100) DEFAULT '' COMMENT '修改人',
+    `deleted_on` int(10) unsigned DEFAULT '0' COMMENT '删除时间',
+    `is_del` tinyint(3) unsigned DEFAULT '0' COMMENT '是否删除 0 为未删除、1 为已删除',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文章管理';
 
@@ -30,6 +42,12 @@ CREATE TABLE `blog_article_tag` (
     `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
     `article_id` int(11) NOT NULL COMMENT '文章 ID',
     `tag_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '标签 ID',
+    `created_on` int(10) unsigned DEFAULT '0' COMMENT '创建时间',
+    `created_by` varchar(100) DEFAULT '' COMMENT '创建人',
+    `modified_on` int(10) unsigned DEFAULT '0' COMMENT '修改时间',
+    `modified_by` varchar(100) DEFAULT '' COMMENT '修改人',
+    `deleted_on` int(10) unsigned DEFAULT '0' COMMENT '删除时间',
+    `is_del` tinyint(3) unsigned DEFAULT '0' COMMENT '是否删除 0 为未删除、1 为已删除',
     # 此处请写入公共字段
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文章标签关联';

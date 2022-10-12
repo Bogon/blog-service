@@ -7,9 +7,9 @@ import (
 	"global"
 	"log"
 	"logger"
+	"model"
 	"net/http"
 	"routers"
-	"senyas.tour.com/blog-service/internal/model"
 	"setting"
 	"time"
 )
@@ -31,6 +31,10 @@ func init() {
 	}
 }
 
+// @title 博客系统
+// @version 1.0
+// @description 开发博客系统
+// @termsOfService https://github.com/go-programming-tour-book
 func main() {
 
 	fmt.Println(global.ServerSetting)

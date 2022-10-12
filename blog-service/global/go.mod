@@ -30,5 +30,4 @@ require (
 )
 
 replace setting => ../pkg/setting
-
 replace logger => ../pkg/logger
