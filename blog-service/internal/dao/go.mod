@@ -19,6 +19,7 @@ require (
 	github.com/go-playground/validator/v10 v10.10.0 // indirect
 	github.com/go-sql-driver/mysql v1.5.0 // indirect
 	github.com/goccy/go-json v0.9.7 // indirect
+	github.com/golang-jwt/jwt/v4 v4.4.2 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
@@ -48,6 +49,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	logger v0.0.0-00010101000000-000000000000 // indirect
 	setting v0.0.0 // indirect
+	util v0.0.0-00010101000000-000000000000 // indirect
 )
 
 replace (
@@ -58,4 +60,5 @@ replace (
 	logger => ../../pkg/logger
 	model => ../model
 	setting => ../../pkg/setting
+	util => ../../pkg/util
 )

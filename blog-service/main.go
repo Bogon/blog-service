@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/natefinch/lumberjack"
@@ -11,7 +12,20 @@ import (
 	"net/http"
 	"routers"
 	"setting"
+	"strings"
 	"time"
+	"tracer"
+)
+
+var (
+	port    string
+	runMode string
+	config  string
+
+	isVersion    bool
+	buildTime    string
+	buildVersion string
+	gitCommitID  string
 )
 
 func init() {
@@ -29,6 +43,16 @@ func init() {
 	if err != nil {
 		log.Fatalf("init.setupDBEngine err: %v", err)
 	}
+
+	err = setupTracer()
+	if err != nil {
+		log.Fatalf("init.setupTracer err: %v", err)
+	}
+
+	err = setupFlag()
+	if err != nil {
+		log.Fatalf("init.setupFlag err: %v", err)
+	}
 }
 
 // @title 博客系统
@@ -37,12 +61,11 @@ func init() {
 // @termsOfService https://github.com/go-programming-tour-book
 func main() {
 
-	fmt.Println(global.ServerSetting)
-	fmt.Println(global.AppSetting)
-	fmt.Println(global.DatabaseSetting)
-
-	global.Logger.Infof("%s: senyas.tour/%s", "eddycjy", "blog-service")
-	global.Logger.Info("%s: senyas.tour/%s", "eddycjy", "blog-service")
+	if isVersion {
+		fmt.Println("build_time:", buildTime)
+		fmt.Println("build_version:", buildVersion)
+		fmt.Println("bgit_commit_id:", gitCommitID)
+	}
 
 	gin.SetMode(global.ServerSetting.RunMode)
 	router := routers.NewRouter()
@@ -60,25 +83,45 @@ func main() {
 }
 
 func setupSetting() error {
-	newSetting, err := setting.NewSetting()
+	s, err := setting.NewSetting(strings.Split(config, ",")...)
 	if err != nil {
 		return err
 	}
-	err = newSetting.ReadSection("Server", &global.ServerSetting)
+	err = s.ReadSection("Server", &global.ServerSetting)
 	if err != nil {
 		return err
 	}
-	err = newSetting.ReadSection("App", &global.AppSetting)
+	err = s.ReadSection("App", &global.AppSetting)
 	if err != nil {
 		return err
 	}
-	err = newSetting.ReadSection("Database", &global.DatabaseSetting)
+	err = s.ReadSection("Database", &global.DatabaseSetting)
 	if err != nil {
 		return err
 	}
 
+	err = s.ReadSection("Email", &global.EmailSetting)
+	if err != nil {
+		return err
+	}
+
+	err = s.ReadSection("JWT", &global.JWTSetting)
+	if err != nil {
+		return err
+	}
+
+	global.JWTSetting.Expire *= time.Second
 	global.ServerSetting.ReadTimeout *= time.Second
 	global.ServerSetting.WriteTimeout *= time.Second
+
+	if port != "" {
+		global.ServerSetting.HttpPort = port
+	}
+
+	if runMode != "" {
+		global.ServerSetting.RunMode = runMode
+	}
+
 	return nil
 }
 
@@ -99,6 +142,25 @@ func setupDBEngine() error {
 	if err != nil {
 		return err
 	}
+
+	return nil
+}
+
+func setupTracer() error {
+	jeagerTracer, _, err := tracer.NewJeagerTracer("blog-service", "127.0.0.1:6831")
+	if err != nil {
+		return err
+	}
+	global.Tracer = jeagerTracer
+	return err
+}
+
+func setupFlag() error {
+	flag.StringVar(&port, "post", "", "启动端口")
+	flag.StringVar(&runMode, "mode", "", "启动模式")
+	flag.StringVar(&config, "config", "configs/", "指定要使用的配置文件路径")
+	flag.BoolVar(&isVersion, "version", false, "编译信息")
+	flag.Parse()
 
 	return nil
 }

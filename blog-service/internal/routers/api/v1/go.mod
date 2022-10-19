@@ -11,6 +11,8 @@ replace (
 	model => ../../../model
 	service => ../../../service
 	setting => ../../../../pkg/setting
+	upload => ../../../../pkg/upload
+	util => ../../../../pkg/util
 )
 
 replace app => ../../../../pkg/app
@@ -33,6 +35,7 @@ require (
 	github.com/go-playground/validator/v10 v10.10.0 // indirect
 	github.com/go-sql-driver/mysql v1.5.0 // indirect
 	github.com/goccy/go-json v0.9.7 // indirect
+	github.com/golang-jwt/jwt/v4 v4.4.2 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/jinzhu/gorm v1.9.16 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
@@ -63,4 +66,6 @@ require (
 	logger v0.0.0-00010101000000-000000000000 // indirect
 	model v0.0.0-00010101000000-000000000000 // indirect
 	setting v0.0.0 // indirect
+	upload v0.0.0-00010101000000-000000000000 // indirect
+	util v0.0.0-00010101000000-000000000000 // indirect
 )

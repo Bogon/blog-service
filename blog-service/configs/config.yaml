@@ -4,6 +4,7 @@ Server:
   ReadTimeout: 60
   WriteTimeout: 60
 App:
+  DefaultContextTimeout: 60
   DefaultPageSize: 10
   MaxPageSize: 100
   LogSavePath: storage/logs
@@ -27,3 +28,16 @@ Database:
   ParseTime: True
   MaxIdleConns: 10
   MaxOpenConns: 30
+JWT:
+  Secret: eddycjy
+  Issuer: blog-service
+  Expire: 7200
+Email:
+  Host: smtp.qq.com
+  Port: 465
+  UserName: 769575933@qq.com
+  Password: Zhang00624
+  IsSSL: true
+  From: 769575933@qq.com
+  To:
+    - 769575933@qq.com

@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/jinzhu/gorm v1.9.16
+	github.com/opentracing/opentracing-go v1.2.0
 	logger v0.0.0-00010101000000-000000000000
 	setting v0.0.0
 )
@@ -30,4 +31,5 @@ require (
 )
 
 replace setting => ../pkg/setting
+
 replace logger => ../pkg/logger
