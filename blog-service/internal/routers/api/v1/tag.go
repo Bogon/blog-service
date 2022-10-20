@@ -15,6 +15,14 @@ func NewTag() Tag {
 	return Tag{}
 }
 
+// Get
+// @Summary 获取一个标签
+// @Produce  json
+// @Param id query uint32 1 "标签id"
+// @Success 200 {object} model.TagSwagger "成功"
+// @Failure 400 {object} errcode.Error "请求错误"
+// @Failure 500 {object} errcode.Error "内部错误"
+// @Router /api/v1/tags/:id [get]
 func (t *Tag) Get(c *gin.Context) {
 	tagParam := service.GetTagRequest{ID: convert.StrTo(c.Param("id")).MustUInt32()}
 	response := app.NewResponse(c)

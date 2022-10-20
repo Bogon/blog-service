@@ -96,3 +96,8 @@ func (a *Article) Update(db *gorm.DB, values interface{}) error {
 	}
 	return nil
 }
+
+// Delete 删除文章
+func (a *Article) Delete(db *gorm.DB) error {
+	return db.Where("id = ?", a.ID).Delete(a).Error
+}

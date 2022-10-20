@@ -15,6 +15,14 @@ func NewArticle() Article {
 	return Article{}
 }
 
+// Get
+// @Summary 获取文章
+// @Produce  json
+// @Param id query uint32 1 "文章id"
+// @Success 200 {object} model.ArticleSwagger "成功"
+// @Failure 400 {object} errcode.Error "请求错误"
+// @Failure 500 {object} errcode.Error "内部错误"
+// @Router /api/v1/articles/:id [get]
 func (a *Article) Get(c *gin.Context) {
 	// 1. 获取参数
 	param := service.GetArticleRequest{convert.StrTo(c.Param("id")).MustUInt32()}
@@ -39,7 +47,22 @@ func (a *Article) Get(c *gin.Context) {
 	return
 }
 
-// List 获取文章列表
+// List
+// @Summary 获取文章列表
+// @Produce  json
+// @Param title query string false "标签名称" maxlength(100)
+// @Param desc query string false "描述" maxlength(100)
+// @Param content query string false "文章内容" maxlength(100)
+// @Param coverImageURL query string false "文章图片" maxlength(100)
+// @Param CreatedBy query string false "文章创建者" maxlength(100)
+// @Param state query int false "状态" Enums(0, 1) default(1)
+// @Param isDel query int false "是否删除" Enums(0, 1) default(0)
+// @Param page query int false "页码"
+// @Param page_size query int false "每页数量"
+// @Success 200 {object} model.ArticleSwagger "成功"
+// @Failure 400 {object} errcode.Error "请求错误"
+// @Failure 500 {object} errcode.Error "内部错误"
+// @Router /api/v1/articles [get]
 func (a *Article) List(c *gin.Context) {
 	// 1. 获取参数
 	param := service.ArticleListRequest{}
@@ -77,7 +100,19 @@ func (a *Article) List(c *gin.Context) {
 	response.ToResponseList(articleList, totalRows)
 }
 
-// Create 创建文章
+// Create
+// @Summary 创建文章
+// @Produce  json
+// @Param title query string false "标签名称" maxlength(100)
+// @Param desc query string false "描述" maxlength(100)
+// @Param content query string false "文章内容" maxlength(100)
+// @Param coverImageURL query string false "文章图片" maxlength(100)
+// @Param createdBy query string false "文章创建者" maxlength(100)
+// @Param state query int false "状态" Enums(0, 1) default(1)
+// @Success 200 {object} model.ArticleSwagger "成功"
+// @Failure 400 {object} errcode.Error "请求错误"
+// @Failure 500 {object} errcode.Error "内部错误"
+// @Router /api/v1/articles [post]
 func (a *Article) Create(c *gin.Context) {
 	// 1.获取传入的参数,绑定参数
 	param := service.CreateArticleRequest{}
@@ -104,6 +139,20 @@ func (a *Article) Create(c *gin.Context) {
 	response.ToResponse(gin.H{})
 }
 
+// Update
+// @Summary 更新文章
+// @Produce  json
+// @Param title query string false "标签名称" maxlength(100)
+// @Param desc query string false "描述" maxlength(100)
+// @Param content query string false "文章内容" maxlength(100)
+// @Param coverImageURL query string false "文章图片" maxlength(100)
+// @Param createdBy query string false "文章创建者" maxlength(100)
+// @Param state query int false "状态" Enums(0, 1) default(1)
+// @Param modified_by body string true "修改者" minlength(3) maxlength(100)
+// @Success 200 {array} model.ArticleSwagger "成功"
+// @Failure 400 {object} errcode.Error "请求错误"
+// @Failure 500 {object} errcode.Error "内部错误"
+// @Router /api/v1/tags/{id} [put]
 func (a *Article) Update(c *gin.Context) {
 	// 1.获取参数
 	param := service.UpdateArticleRequest{ID: convert.StrTo(c.Param("id")).MustUInt32()}
@@ -127,6 +176,33 @@ func (a *Article) Update(c *gin.Context) {
 	return
 }
 
+// Delete
+// @Summary 删除文章
+// @Produce  json
+// @Param id path int true "文章 ID"
+// @Success 200 {string} string "成功"
+// @Failure 400 {object} errcode.Error "请求错误"
+// @Failure 500 {object} errcode.Error "内部错误"
+// @Router /api/v1/articles/{id} [delete]
 func (a *Article) Delete(c *gin.Context) {
-
+	// 1.获取参数
+	param := service.DeleteArticleRequest{ID: convert.StrTo(c.Param("id")).MustUInt32()}
+	response := app.NewResponse(c)
+	// 2. 检验参数
+	valid, errors := app.BindAndValid(c, &param)
+	if !valid {
+		global.Logger.Errorf(c, "svc.Delete error:", errors)
+		response.ToErrorResponse(errcode.InvalidParams)
+		return
+	}
+	// 3.从数据库删除
+	svc := service.New(c)
+	if err := svc.DeleteArticle(&param); err != nil {
+		global.Logger.Errorf(c, "svc.DeleteArticle error:", err)
+		response.ToErrorResponse(errcode.ErrorDeleteArticleFail)
+		return
+	}
+	// 4.返回结果
+	response.ToResponse(nil)
+	return
 }

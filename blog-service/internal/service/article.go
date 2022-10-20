@@ -43,6 +43,10 @@ type UpdateArticleRequest struct {
 	IsDel         uint8  `form:"is_del,default=1" binding:"oneof=0 1"`
 }
 
+type DeleteArticleRequest struct {
+	ID uint32 `form:"id" binding:"required,gte=1"`
+}
+
 // CreateArticle 创建博客文章
 func (svc *Service) CreateArticle(param *CreateArticleRequest) error {
 	return svc.dao.CreateArticle(param.Title, param.Desc, param.Content, param.CoverImageUrl, param.CreatedBy, param.State)
@@ -66,4 +70,9 @@ func (svc *Service) GetArticleList(param *ArticleListRequest, paper *app.Pager) 
 // UpdateArticle 更新文章
 func (svc *Service) UpdateArticle(param *UpdateArticleRequest) error {
 	return svc.dao.UpdateArticle(param.ID, param.Title, param.Desc, param.Content, param.CoverImageUrl, param.ModifiedBy, param.State, param.IsDel)
+}
+
+// DeleteArticle 删除文章
+func (svc Service) DeleteArticle(param *DeleteArticleRequest) error {
+	return svc.dao.DeleteArticle(param.ID)
 }

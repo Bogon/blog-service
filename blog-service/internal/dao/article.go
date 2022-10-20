@@ -92,3 +92,9 @@ func (d *Dao) UpdateArticle(id uint32, title, desc, content, coverImageURL, modi
 
 	return article.Update(d.engine, values)
 }
+
+// DeleteArticle 删除文章
+func (d *Dao) DeleteArticle(id uint32) error {
+	article := model.Article{Model: &model.Model{ID: id}}
+	return article.Delete(d.engine)
+}
