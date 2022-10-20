@@ -20,6 +20,14 @@ type TagSwagger struct {
 	Pager *app.Pager
 }
 
+func (t Tag) Tag(db *gorm.DB) (*Tag, error) {
+	var tag Tag
+	if err := db.Where("id = ?", t.ID).First(&tag).Error; err != nil {
+		return nil, err
+	}
+	return &tag, nil
+}
+
 func (t Tag) Count(db *gorm.DB) (int, error) {
 	var count int
 	if t.Name != "" {

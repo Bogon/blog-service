@@ -2,9 +2,15 @@ package dao
 
 import (
 	"app"
-	"fmt"
 	"model"
 )
+
+func (d *Dao) GetTag(id uint32) (*model.Tag, error) {
+	tag := model.Tag{
+		Model: &model.Model{ID: id},
+	}
+	return tag.Tag(d.engine)
+}
 
 func (d *Dao) CountTag(name string, state uint8) (int, error) {
 	tag := model.Tag{Name: name, State: state}
@@ -31,12 +37,11 @@ func (d *Dao) UpdateTag(id uint32, name string, state uint8, modifiedBy string) 
 	tag := model.Tag{
 		Model: &model.Model{ID: id},
 	}
+
 	values := map[string]interface{}{
 		"state":       state,
 		"modified_by": modifiedBy,
 	}
-
-	fmt.Println("tag info:", tag)
 
 	if name != "" {
 		values["name"] = name

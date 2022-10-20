@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -10,9 +11,12 @@ import (
 	"logger"
 	"model"
 	"net/http"
+	"os"
+	"os/signal"
 	"routers"
 	"setting"
 	"strings"
+	"syscall"
 	"time"
 	"tracer"
 )
@@ -77,9 +81,26 @@ func main() {
 		MaxHeaderBytes: 1 << 20,
 	}
 	//_ = s.ListenAndServe()
-	if err := s.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-		fmt.Println(err)
+	go func() {
+		if err := s.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("s.ListenAndServe err: %v \n", err)
+		}
+	}()
+
+	// 等待中断信号
+	quit := make(chan os.Signal)
+	// 接受 syscall.SIGINT 和 syscall.SIGTERM 信号
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+	log.Println("shuting down server...")
+	// 只有 5秒时间处理原有请求
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err := s.Shutdown(ctx); err != nil {
+		log.Fatalf("Server forced shutdown:%v\n", err)
 	}
+
+	log.Println("Service exting...")
 }
 
 func setupSetting() error {

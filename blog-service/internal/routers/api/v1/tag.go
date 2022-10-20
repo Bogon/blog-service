@@ -15,7 +15,26 @@ func NewTag() Tag {
 	return Tag{}
 }
 
-func (t *Tag) Get(c *gin.Context) {}
+func (t *Tag) Get(c *gin.Context) {
+	tagParam := service.GetTagRequest{ID: convert.StrTo(c.Param("id")).MustUInt32()}
+	response := app.NewResponse(c)
+	valid, errs := app.BindAndValid(c, &tagParam)
+	if !valid {
+		global.Logger.Errorf(c, "app.BindAndValid errs: %v", errs)
+		response.ToErrorResponse(errcode.InvalidParams.WithDetails(errs.Errors()...))
+		return
+	}
+	svc := service.New(c.Request.Context())
+	tag, err := svc.GetTag(&service.GetTagRequest{ID: tagParam.ID})
+	if err != nil {
+		global.Logger.Errorf(c, "svc.GetTag err: %v", err)
+		response.ToErrorResponse(errcode.ErrorGetTagFail)
+		return
+	}
+
+	response.ToResponse(tag)
+	return
+}
 
 // List
 // @Summary 获取多个标签
@@ -78,7 +97,21 @@ func (t *Tag) Create(c *gin.Context) {
 		return
 	}
 	svc := service.New(c.Request.Context())
-	err := svc.CreateTag(&param)
+	countParam := service.CountTagRequest{Name: param.Name, State: param.State}
+	countTag, err := svc.CountTag(&countParam)
+	if err != nil {
+		global.Logger.Errorf(c, "CreateTag.svc.CountTagRequest err: %v", err)
+		response.ToErrorResponse(errcode.ErrorCreateTagFail)
+		return
+	}
+
+	if countTag > 0 {
+		global.Logger.Errorf(c, "svc.CreateTag err: %v", err)
+		response.ToErrorResponse(errcode.ErrorTagExist)
+		return
+	}
+
+	err = svc.CreateTag(&param)
 	if err != nil {
 		global.Logger.Errorf(c, "svc.CreateTag err: %v", err)
 		response.ToErrorResponse(errcode.ErrorCreateTagFail)
