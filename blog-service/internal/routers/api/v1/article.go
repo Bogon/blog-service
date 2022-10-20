@@ -38,9 +38,43 @@ func (a *Article) Get(c *gin.Context) {
 	response.ToResponse(article)
 	return
 }
-func (a *Article) List(c *gin.Context) {
-	// 获取文章列表
 
+// List 获取文章列表
+func (a *Article) List(c *gin.Context) {
+	// 1. 获取参数
+	param := service.ArticleListRequest{}
+	response := app.NewResponse(c)
+	// 2. 绑定参数、校验参数
+	valid, errors := app.BindAndValid(c, &param)
+	if !valid {
+		global.Logger.Errorf(c, "svc.List error:", errors)
+		response.ToErrorResponse(errcode.InvalidParams)
+		return
+	}
+	//3. 查询数据库
+	svc := service.New(c)
+	// 3.1 查询记录符合条件的总条数
+	totalRows, err := svc.CountArticle(&service.CountArticleRequest{
+		Title:     param.Title,
+		Desc:      param.Desc,
+		State:     param.State,
+		CreatedBy: param.CreatedBy,
+	})
+	if err != nil {
+		global.Logger.Errorf(c, "svc.CountArticle error:", err)
+		response.ToErrorResponse(errcode.ErrorCountArticleFail)
+		return
+	}
+	// 3.2 查询所有的符合条件的记录
+	paper := app.Pager{Page: app.GetPage(c), PageSize: app.GetPageSize(c)}
+	articleList, err := svc.GetArticleList(&param, &paper)
+	if err != nil {
+		global.Logger.Errorf(c, "svc.GetArticleList error:", err)
+		response.ToErrorResponse(errcode.ErrorGetArticleListFail)
+		return
+	}
+	// 5.返回结果
+	response.ToResponseList(articleList, totalRows)
 }
 
 // Create 创建文章
@@ -70,5 +104,10 @@ func (a *Article) Create(c *gin.Context) {
 	response.ToResponse(gin.H{})
 }
 
-func (a *Article) Update(c *gin.Context) {}
-func (a *Article) Delete(c *gin.Context) {}
+func (a *Article) Update(c *gin.Context) {
+
+}
+
+func (a *Article) Delete(c *gin.Context) {
+
+}

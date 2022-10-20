@@ -23,9 +23,10 @@ var (
 )
 
 var (
-	ErrorGetArticleListFail = NewError(30010001, "创建文章列表失败")
+	ErrorGetArticleListFail = NewError(30010001, "获取文章列表失败")
 	ErrorCreateArticleFail  = NewError(30010002, "创建文章失败")
 	ErrorUpdateArticleFail  = NewError(30010003, "更新文章失败")
 	ErrorDeleteArticleFail  = NewError(30010004, "删除文章失败")
 	ErrorGetArticleFail     = NewError(30010005, "获取文章失败")
+	ErrorCountArticleFail   = NewError(30010006, "统计文章失败")
 )
