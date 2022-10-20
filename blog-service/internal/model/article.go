@@ -63,7 +63,7 @@ func (a *Article) Count(db *gorm.DB) (int, error) {
 }
 
 // List 获取文章列表
-func (a Article) List(db *gorm.DB, pageOffset, pageSize int) ([]*Article, error) {
+func (a *Article) List(db *gorm.DB, pageOffset, pageSize int) ([]*Article, error) {
 	// 创建临时存储列表变量
 	var articleList []*Article
 	var err error
@@ -87,4 +87,12 @@ func (a Article) List(db *gorm.DB, pageOffset, pageSize int) ([]*Article, error)
 		return nil, err
 	}
 	return articleList, nil
+}
+
+// Update 更新文章
+func (a *Article) Update(db *gorm.DB, values interface{}) error {
+	if err := db.Model(a).Where("id = ?", a.ID).Update(values).Error; err != nil {
+		return err
+	}
+	return nil
 }

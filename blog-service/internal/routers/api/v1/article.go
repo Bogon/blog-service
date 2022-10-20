@@ -105,7 +105,26 @@ func (a *Article) Create(c *gin.Context) {
 }
 
 func (a *Article) Update(c *gin.Context) {
-
+	// 1.获取参数
+	param := service.UpdateArticleRequest{ID: convert.StrTo(c.Param("id")).MustUInt32()}
+	response := app.NewResponse(c)
+	// 2.绑定并校验参数
+	valid, errors := app.BindAndValid(c, &param)
+	if !valid {
+		global.Logger.Errorf(c, "svc.Update error:", errors)
+		response.ToErrorResponse(errcode.InvalidParams)
+		return
+	}
+	// 3.提交更改到数据库
+	svc := service.New(c)
+	if err := svc.UpdateArticle(&param); err != nil {
+		global.Logger.Errorf(c, "svc.UpdateArticle error:", err)
+		response.ToErrorResponse(errcode.ErrorUpdateArticleFail)
+		return
+	}
+	// 4.返回修改结果
+	response.ToResponse(nil)
+	return
 }
 
 func (a *Article) Delete(c *gin.Context) {

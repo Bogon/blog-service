@@ -139,7 +139,7 @@ func (t *Tag) Update(c *gin.Context) {
 	valid, errs := app.BindAndValid(c, &param)
 	if !valid {
 		global.Logger.Errorf(c, "svc.CountTag err: %v", errs)
-		response.ToErrorResponse(errcode.ErrorUpdateTagFail)
+		response.ToErrorResponse(errcode.InvalidParams)
 		return
 	}
 

@@ -55,3 +55,40 @@ func (d *Dao) GetArticleList(title, desc, createdBy string, state uint8, page, p
 	pageoffset := app.GetPageOffset(page, pageSize)
 	return article.List(d.engine, pageoffset, pageSize)
 }
+
+// UpdateArticle 更新文章
+func (d *Dao) UpdateArticle(id uint32, title, desc, content, coverImageURL, modifiedBy string, state uint8, isDel uint8) error {
+	// 创建 model
+	article := model.Article{
+		Model: &model.Model{
+			ID: id,
+		},
+	}
+
+	values := map[string]interface{}{
+		"state":  state,
+		"is_del": isDel,
+	}
+
+	if modifiedBy != "" {
+		values["modified_by"] = modifiedBy
+	}
+
+	if title != "" {
+		values["title"] = title
+	}
+
+	if desc != "" {
+		values["desc"] = desc
+	}
+
+	if coverImageURL != "" {
+		values["cover_image_url"] = coverImageURL
+	}
+
+	if content != "" {
+		values["content"] = content
+	}
+
+	return article.Update(d.engine, values)
+}
