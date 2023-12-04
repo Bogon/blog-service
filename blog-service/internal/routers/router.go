@@ -3,6 +3,7 @@ package routers
 import (
 	"api"
 	_ "docs"
+	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -64,5 +65,6 @@ func NewRouter() *gin.Engine {
 		apiv1.GET("/articles", article.List)
 	}
 
+	pprof.Register(r) // 注册pprof 相关路由
 	return r
 }

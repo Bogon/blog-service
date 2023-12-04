@@ -48,7 +48,6 @@ CREATE TABLE `blog_article_tag` (
     `modified_by` varchar(100) DEFAULT '' COMMENT '修改人',
     `deleted_on` int(10) unsigned DEFAULT '0' COMMENT '删除时间',
     `is_del` tinyint(3) unsigned DEFAULT '0' COMMENT '是否删除 0 为未删除、1 为已删除',
-    # 此处请写入公共字段
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文章标签关联';
 
